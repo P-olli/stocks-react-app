@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import StockTabs from './StockTabs';
+import Overview from './overview';
+import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
-ReactDOM.render(<StockTabs />, document.getElementById('root'));
+ReactDOM.render(<BrowserRouter><Overview  /></BrowserRouter>, document.getElementById('root'));
 registerServiceWorker();
