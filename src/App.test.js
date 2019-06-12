@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './StockTabs';
+import App from './stocks/stockTabs';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');

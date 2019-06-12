@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import StockTabs from './StockTabs';
+import StockTabs from './stocks/stockTabs';
+import Depot from './depot/depot'
 import logo from './logo.svg';
 import './App.css';
 
@@ -23,15 +24,23 @@ export default class Overview extends Component {
                 <h2>List of all the stocks you need</h2>
             </div>
             {!this.state.isDetailView ? (
-                <div >
+                <div align="center">
                     <Link to="/stocks">
                         <button type="button" onClick={this.handleDetailClick}>
-                            Click Me!
+                            Stocks
+                        </button>
+                    </Link>
+                    <Link to="/depot">
+                        <button type="button" onClick={this.handleDetailClick}>
+                            Depot
                         </button>
                     </Link>
                 </div>
             ) :(
-                <Route exact path="/stocks" component={StockTabs} />
+                <div align="center">
+                    <Route exact path="/stocks" component={StockTabs} />
+                    <Route exact path="/depot" component={Depot} />
+                </div>
             )}
         </div>
         </Router>

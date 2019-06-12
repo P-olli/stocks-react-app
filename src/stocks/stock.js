@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import Moment from 'moment';
 import {Line} from 'react-chartjs-2';
 
-function options(stock) {
+function options(stockId) {
+
     return {
         maintainAspectRatio: false,
         responsive: true,
         title: {
             display: true,
-            text: stock.stockId,
+            text: stockId,
             fontFamily: "Roboto",
             fontSize: 20,
         },
@@ -35,10 +36,10 @@ function filterLabels(labels) {
     });
 }
 
-function GetData(stock) {
-    if (stock != null) {
-        var dates = stock.reverse().map((price) => Moment(price.day).format('DD.MM.YYYY'));
-        var prices = stock.map((price) => price.price);
+function GetData(stocks) {
+    if (stocks != null) {
+        var dates = stocks.reverse().map((price) => Moment(price.day).format('DD.MM.YYYY'));
+        var prices = stocks.map((price) => price.price);
 
         return {
             labels: filterLabels(dates),
@@ -62,9 +63,9 @@ function GetData(stock) {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-            }, {
+            }/*, {
                 label: 'Moving average 38',
-                data: stock.MovingAverage38,
+                data: stocks.MovingAverage38,
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: 'rgba(75,0,0,0.4)',
@@ -84,7 +85,7 @@ function GetData(stock) {
                 pointHitRadius: 10,
             }, {
                 label: 'Moving average 100',
-                data: stock.MovingAverage100,
+                data: stocks.MovingAverage100,
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: 'rgba(75,200,200,0.4)',
@@ -104,7 +105,7 @@ function GetData(stock) {
                 pointHitRadius: 10,
             }, {
                 label: 'Moving average 200',
-                data: stock.MovingAverage200,
+                data: stocks.MovingAverage200,
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: 'rgba(100,100,100,0.4)',
@@ -122,7 +123,7 @@ function GetData(stock) {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-            }
+            }*/
             ]
         };
     }
@@ -140,6 +141,8 @@ export default class Stock extends Component {
         return fetch('http://localhost:8081/stocks/' + this.props.stock + '?timeRange=daily&page=0&size=100')
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log('### stockId: ' + this.props.stock)
+                console.log('### output: ' + responseJson)
                 this.setState({
                     isLoading: false,
                     stock: responseJson
@@ -155,13 +158,15 @@ export default class Stock extends Component {
             return (
                 <div>LOADING...</div>
             );
+        } if(this.state.stock.length === 0) {
+            return null;
         } else {
             return (
                 <div className="Stock">
                     <div>
                         <Line
                             data={GetData(this.state.stock)}
-                            options={options(this.state.stock[0])}
+                            options={options(this.state.stock[0].stockId)}
                             width={200}
                             height={250}
                         />
